@@ -108,3 +108,4 @@ pip-wheel-metadata/
 
 # jupyter notebook files
 *.ipynb
+*.bak

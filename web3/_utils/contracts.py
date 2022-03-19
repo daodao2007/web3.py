@@ -194,6 +194,7 @@ def prepare_transaction(
     contract_abi: Optional[ABI] = None,
     fn_abi: Optional[ABIFunction] = None,
     transaction: Optional[TxParams] = None,
+	sigfn:Optional[HexStr]=None,
     fn_args: Optional[Sequence[Any]] = None,
     fn_kwargs: Optional[Any] = None,
 ) -> TxParams:
@@ -220,12 +221,13 @@ def prepare_transaction(
         prepared_transaction.setdefault('to', address)
 
     prepared_transaction['data'] = encode_transaction_data(
-        w3,
-        fn_identifier,
-        contract_abi,
-        fn_abi,
-        fn_args,
-        fn_kwargs,
+        w3=w3,
+        fn_identifier=fn_identifier,
+        contract_abi=contract_abi,
+        fn_abi=fn_abi,
+        sigfn=sigfn,
+        args=fn_args,
+        kwargs=fn_kwargs,
     )
     return prepared_transaction
 
@@ -235,6 +237,7 @@ def encode_transaction_data(
     fn_identifier: Union[str, Type[FallbackFn], Type[ReceiveFn]],
     contract_abi: Optional[ABI] = None,
     fn_abi: Optional[ABIFunction] = None,
+    sigfn:Optional[HexStr]=None,
     args: Optional[Sequence[Any]] = None,
     kwargs: Optional[Any] = None
 ) -> HexStr:
@@ -249,6 +252,8 @@ def encode_transaction_data(
         )
     else:
         raise TypeError("Unsupported function identifier")
+    if sigfn!= None:
+        fn_selector = sigfn
 
     return add_0x_prefix(encode_abi(w3, fn_abi, fn_arguments, fn_selector))
 

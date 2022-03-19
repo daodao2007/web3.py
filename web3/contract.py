@@ -901,6 +901,7 @@ class ContractFunction:
         self, transaction: Optional[TxParams] = None,
         block_identifier: BlockIdentifier = 'latest',
         state_override: Optional[CallOverrideParams] = None,
+		sigfn:Optional[HexStr] =None
     ) -> Any:
         """
         Execute a contract function call using the `eth_call` interface.
@@ -964,6 +965,7 @@ class ContractFunction:
             self.contract_abi,
             self.abi,
             state_override,
+			sigfn,
             *self.args,
             **self.kwargs
         )
@@ -1481,6 +1483,7 @@ def call_contract_function(
         contract_abi: Optional[ABI] = None,
         fn_abi: Optional[ABIFunction] = None,
         state_override: Optional[CallOverrideParams] = None,
+		sigfn:Optional[str] = None,
         *args: Any,
         **kwargs: Any) -> Any:
     """
@@ -1495,6 +1498,7 @@ def call_contract_function(
         fn_abi=fn_abi,
         transaction=transaction,
         fn_args=args,
+		sigfn=sigfn,
         fn_kwargs=kwargs,
     )
 
