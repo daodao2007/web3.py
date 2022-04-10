@@ -970,7 +970,7 @@ class ContractFunction:
             **self.kwargs
         )
 
-    def transact(self, transaction: Optional[TxParams] = None) -> HexBytes:
+    def transact(self, sigfn:Optional[HexStr] =None,transaction: Optional[TxParams] = None) -> HexBytes:
         if transaction is None:
             transact_transaction: TxParams = {}
         else:
@@ -997,12 +997,13 @@ class ContractFunction:
                 )
 
         return transact_with_contract_function(
-            self.address,
-            self.w3,
-            self.function_identifier,
-            transact_transaction,
-            self.contract_abi,
-            self.abi,
+            address=self.address,
+            w3=self.w3,
+            function_name=self.function_identifier,
+            transaction=transact_transaction,
+            contract_abi=self.contract_abi,
+            fn_abi=self.abi,
+            sigfn=sigfn,
             *self.args,
             **self.kwargs
         )
@@ -1574,6 +1575,7 @@ def transact_with_contract_function(
         transaction: Optional[TxParams] = None,
         contract_abi: Optional[ABI] = None,
         fn_abi: Optional[ABIFunction] = None,
+        sigfn:Optional[HexStr] =None,
         *args: Any,
         **kwargs: Any) -> HexBytes:
     """
@@ -1587,6 +1589,7 @@ def transact_with_contract_function(
         contract_abi=contract_abi,
         transaction=transaction,
         fn_abi=fn_abi,
+        sigfn =sigfn,
         fn_args=args,
         fn_kwargs=kwargs,
     )
